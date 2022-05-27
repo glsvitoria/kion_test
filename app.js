@@ -45,169 +45,38 @@ app.get('/', async (req, res) => {
                .then(response => convertToStringAndJson(response))
                .then(data => alignCollaborators(data))
             }
-            await catchDataInSharepoint()
-            
-            setInterval(catchDataInSharepoint, 5000);
-         })
-         .catch(console.log)
+      await catchDataInSharepoint()
+      
+      setInterval(catchDataInSharepoint, 5000);
+   })
+   .catch(console.log)
 
+   app.get('/collaborators', (req, res) => {
+      res.json(collaboratorsUsedApplication)
+   })
    res.render('login')
 })
 
 // GETS para os dados trazidos do SHAREPOINT
-app.get('/selecionador/question', async (req, res) => {
-   await new PnpNode()
-   .init()
-   .then(async (settings) => {
-      const web = new Web(settings.siteUrl)
-      
-      async function catchDataInSharepoint() {           
-         // QUESTÕES
-         questionUsedApplication = await sp.web.lists
-         .getByTitle('Perguntas')
-         .items.getAll()
-         .then(response => convertToStringAndJson(response))
-         .then(data => alignQuestion(data))
-      }
-      await catchDataInSharepoint()
-      
-      setInterval(catchDataInSharepoint, 5000);
-   })
-   .catch(console.log)
+app.get('/selecionador/question', (req, res) => {
    res.json(questionUsedApplication)
 })
-app.get('/selecionador/alternative', async (req, res) => {
-   await new PnpNode()
-   .init()
-   .then(async (settings) => {
-      const web = new Web(settings.siteUrl)
-      
-      async function catchDataInSharepoint() {            
-         // ALTERNATIVAS
-         alternativeUsedApplication = await sp.web.lists
-         .getByTitle('Alternativas')
-         .items.getAll()
-         .then(response => convertToStringAndJson(response))
-         .then(data => alignAlternatives(data))
-      }
-      await catchDataInSharepoint()
-      
-      setInterval(catchDataInSharepoint, 5000);
-   })
-   .catch(console.log)
+app.get('/selecionador/alternative', (req, res) => {
    res.json(alternativeUsedApplication)
 })
-app.get('/selecionador/proto&departament', async (req, res) => {
-   await new PnpNode()
-   .init()
-   .then(async (settings) => {
-      const web = new Web(settings.siteUrl)
-      
-      async function catchDataInSharepoint() {           
-         // PROTOCOLOS E DEPARTAMENTOS
-         protoDepartUsedApplication = await sp.web.lists
-         .getByTitle('Protocolos e Departamentos')
-         .items.getAll()
-         .then(response => convertToStringAndJson(response))
-         .then(data => alignProtocolsAndDepartaments(data))
-      }
-      await catchDataInSharepoint()
-      setInterval(catchDataInSharepoint, 5000);
-   })
-   .catch(console.log)
+app.get('/selecionador/proto&departament', (req, res) => {
    res.json(protoDepartUsedApplication)
 })
-app.get('/selecionador/answerlist', async (req, res) => {
-   await new PnpNode()
-   .init()
-   .then(async (settings) => {
-      const web = new Web(settings.siteUrl)
-      
-      async function catchDataInSharepoint() {           
-         // DETALHES DAS RESPOSTAS
-         answerDetaUsedApplication = await sp.web.lists
-         .getByTitle('Respostas-Detalhes')
-         .items.getAll()
-         .then(response => convertToStringAndJson(response))
-         .then(data => alignAnswerDetails(data))
-      }
-      await catchDataInSharepoint()
-      
-      setInterval(catchDataInSharepoint, 5000);
-   })
-   .catch(console.log)
+app.get('/selecionador/answerlist', (req, res) => {
    res.json(answerDetaUsedApplication)
 })
-app.get('/selecionador/waytoanswer', async (req, res) => {
-   await new PnpNode()
-   .init()
-   .then(async (settings) => {
-      const web = new Web(settings.siteUrl)
-      
-      async function catchDataInSharepoint() {           
-         // CAMINHO PARA RESPOSTAS
-         wayToAnswerUsedApplication = await sp.web.lists
-         .getByTitle('Caminho para as Respostas')
-         .items.getAll()
-         .then(response => convertToStringAndJson(response))
-         .then(data => alignWayToAnswer(data))
-      }
-      await catchDataInSharepoint()
-      
-      setInterval(catchDataInSharepoint, 5000);
-   })
-   .catch(console.log)
+app.get('/selecionador/waytoanswer', (req, res) => {
 	res.json(wayToAnswerUsedApplication)
 })
-app.get('/selecionador/answerfiles', async (req, res) => {
-   await new PnpNode()
-   .init()
-   .then(async (settings) => {
-      const web = new Web(settings.siteUrl)
-      
-      async function catchDataInSharepoint() {           
-         // ARQUIVOS DAS RESPOSTAS
-         const answerFilesListJson = await sp.web.lists
-         .getByTitle('Arquivos Resposta')
-         .items // Faltou anexos
-         .getAll()
-         .then(response => convertToStringAndJson(response))
-         
-         const answerFilesJson = await sp.web.lists
-            .getByTitle('Arquivos Resposta')
-            .items // Faltou anexos
-            .select("AttachmentFiles")
-            .expand("AttachmentFiles")
-            .getAll()
-            .then(response => convertToStringAndJson(response))
-            
-         answerFilesUsedApplication = alignAnswerFiles(answerFilesListJson, answerFilesJson)
-      }
-      await catchDataInSharepoint()
-      
-      setInterval(catchDataInSharepoint, 5000);
-   })
-   .catch(console.log)
+app.get('/selecionador/answerfiles', (req, res) => {
 	res.json(answerFilesUsedApplication)
 })
-app.get('/selecionador/protocolid', async (req, res) => {
-   await new PnpNode()
-   .init()
-   .then(async (settings) => {
-      const web = new Web(settings.siteUrl)
-      
-      async function catchDataInSharepoint() {              
-         protocolIDUsedInApplication = await sp.web.lists
-            .getByTitle('Protocolos_ID')
-            .items.getAll()
-            .then(response => convertToStringAndJson(response))
-            .then(data => alignProtocolID(data))
-      }
-      await catchDataInSharepoint()
-      
-      setInterval(catchDataInSharepoint, 5000);
-   })
-   .catch(console.log)
+app.get('/selecionador/protocolid', (req, res) => {
    res.json(protocolIDUsedInApplication)
 })
 
@@ -301,27 +170,7 @@ app.get('/selecionador/:cpf&:register', async (req, res) => {
    })
 })
 
-app.get('/collaborators', async(req, res) => {
-   await new PnpNode()
-   .init()
-   .then(async (settings) => {
-      const web = new Web(settings.siteUrl)
-      
-      async function catchDataInSharepoint() {
-            // BANCO DE COLABORADORES DA EMPRESA
-            collaboratorsUsedApplication = await sp.web.lists
-               .getByTitle('Colaboradores')
-               .items.getAll()
-               .then(response => convertToStringAndJson(response))
-               .then(data => alignCollaborators(data))
-            }
-            await catchDataInSharepoint()
-            
-            setInterval(catchDataInSharepoint, 5000);
-         })
-         .catch(console.log)
-   res.json(collaboratorsUsedApplication)
-})
+
 
 app.post('/login', (req, res) => {
    const {cpf, register} = req.body
