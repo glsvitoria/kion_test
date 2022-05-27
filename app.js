@@ -55,6 +55,11 @@ app.get('/', async (req, res) => {
    res.render('login')
 })
 
+// GETS para os dados trazidos do SHAREPOINT
+app.get('/collaborators', (req, res) => {
+   res.json(collaboratorsUsedApplication)
+})
+
 app.get('/selecionador/question', (req, res) => {
    res.json(questionUsedApplication)
 })
@@ -166,12 +171,6 @@ app.get('/selecionador/:cpf&:register', async (req, res) => {
       }
    })
 })
-
-// GETS para os dados trazidos do SHAREPOINT
-app.get('/collaborators', (req, res) => {
-   res.json(collaboratorsUsedApplication)
-})
-
 
 app.post('/login', (req, res) => {
    const {cpf, register} = req.body
