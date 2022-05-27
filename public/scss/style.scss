@@ -1,0 +1,315 @@
+$blue-1: #00F5FF;
+$blue-2: #00B1D2;
+$blue-3: #3F8EB7;
+$yellow-1: #FAEB1E;
+$yellow-2: #FFCD00;
+$blue-2-select: #F4F4F4;
+$grey-1: #282828;
+$grey-2: #5A5A5A;
+$grey-3: #8D8E8F;
+$question-background: #F6F6F6;
+$question-border: #A8A8A8;
+
+@font-face {
+   font-family: Volte-Rounded-300;
+   src: url('../kion_fonts/VolteRounded-Light.otf');
+}
+
+@font-face {
+   font-family: Volte-Rounded-400;
+   src: url('../kion_fonts/VolteRounded-Regular.otf');
+}
+
+@font-face {
+   font-family: Volte-Rounded-500;
+   src: url('../kion_fonts/VolteRounded-Medium.otf');
+}
+
+@font-face {
+   font-family: Volte-Rounded-600;
+   src: url('../kion_fonts/VolteRounded-Semibold.otf');
+}
+
+@font-face {
+   font-family: Volte-Rounded-700;
+   src: url('../kion_fonts/VolteRounded-Bold.otf');
+}
+
+* {
+   margin: 0;
+   padding: 0;
+   list-style-type: none;
+   box-sizing: border-box;
+}
+
+html {
+   font-size: 62.5%;
+}
+
+body {
+   font-family: 'Volte-Rounded-400', sans-serif;
+}
+
+// Esconder o elemento na tela, mas para leitores de tela ele ainda aparecer
+.sr-only {
+   border: 0;
+   clip: rect(0,0,0,0);
+   height: 1px;
+   margin: -1px;
+   overflow: hidden;
+   padding: 0;
+   position: absolute;
+   width: 1px;
+}
+
+header {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+
+   height: 7.5rem;
+   background-color: $blue-2;
+   color: #FFF;   
+}
+
+header .header__filter {
+   align-items: center;
+   display: flex;
+   justify-content: center;
+   margin-left: 1rem;
+
+   .header__logo {
+      width: 6rem;
+   }
+
+   .header__title {
+      font-family: 'Volte-Rounded-500', sans-serif;
+      font-size: 2.4rem;
+      margin-left: 1.2rem;
+      margin-right: 4rem;
+   }
+
+   #protocol {
+      background-image: url('../images/chevron_down.svg');
+      background-repeat: no-repeat;
+      background-position: calc(100% - 1rem) center;
+      background-size: 1.6rem;
+      border-radius: .8rem;
+      border: none;
+      font-size: 1.6rem;
+      outline: none;
+      padding: .8rem 10rem .8rem 1rem;
+
+      -webkit-appearance: none;
+      -moz-appearance: none;
+   }
+}
+
+header .header__user {
+   align-items: center;
+   display: flex;
+   justify-content: center;
+   margin-right: 1rem;
+
+   .user__details {
+      align-items: flex-end;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-right: 1rem;
+
+      #user__name, #user__departament{
+         font-size: 1.6rem;
+      }
+
+      #user__departament {
+         font-family: 'Volte-Rounded-300', sans-serif;
+         font-size: 1.2rem;
+         margin-bottom: .4rem;
+      }
+   }
+
+   .exit__button {
+      background: transparent;
+      background-color: $blue-3;
+      border: none;
+      border-radius: 50%;
+      color: #FFF;
+      cursor: pointer;
+      font-family: 'Volte-Rounded-500', sans-serif;
+      font-size: 1.3rem;
+      padding: .6rem .4rem .4rem .6rem;
+      transition: 300ms;
+
+      &:hover {
+         filter: brightness(.8);
+      }
+   }
+}
+
+main {
+   background-color: $question-background;
+   height: calc(100vh - 7.5rem);
+   padding: 2rem;
+}
+
+.content {
+   display: flex;
+   flex-direction: column;
+   height: calc(100vh - 19em);
+   width: calc(100vw - 4rem);
+}
+
+.question__area {
+   width: 100%;
+   height: 100%;
+
+   .question__title {
+      color: $grey-1;
+      font-size: 3rem;
+      position: relative;
+      margin-bottom: 4rem;
+
+      .question__title__span {
+         margin-left: 1rem;
+         font-size: 1.4rem;
+
+         color: $grey-3;
+      }
+   }
+
+   .question__title::after {
+      background: $yellow-2;
+      bottom: -1rem;
+      content: '';
+      display: block;
+      height: .4rem;
+      left: 0;
+      position: absolute;
+      width: 100%;
+   }
+}
+
+.questions {
+   display: flex;
+   height: 100%;
+   overflow-x: scroll;
+
+   ::-webkit-scrollbar {
+      width: 0px;
+   }
+
+   & > .question {
+      background-color: #FFF;
+      border-radius: 1.6rem;
+      margin: 0 1rem;
+      min-width: auto;
+   }
+
+   .questions__options {
+      overflow-y: scroll;
+   }
+
+   &.scroll::-webkit-scrollbar {
+      height: 1.5rem;
+      width: 12px;
+   }
+    
+   &.scroll::-webkit-scrollbar-track {
+      background: #c7c6c6;
+   }
+    
+   &.scroll::-webkit-scrollbar-thumb {
+      background-color: $grey-3; 
+      border: 3px solid #c7c6c6;
+      border-radius: 20px;
+   }
+
+}
+
+.question {
+   align-items: center;
+   display: flex;
+   flex-direction: column;
+   max-width: 25rem;
+
+   .questions__title {
+      background-color: $blue-2;
+      border-radius: 1.6rem;
+      color: #FFF;
+      display: inline-block;
+      margin: 0 auto;
+      padding: 2rem 0;
+      text-align: center;
+      width: 25rem;
+
+      .questions__text {
+         font-family: 'Volte-Rounded-300', sans-serif;
+         font-size: 2rem;
+      }
+   }
+}
+
+.questions__options {
+   display: flex;
+   flex-direction: column;
+   margin: 0 auto;
+   width: 84%;
+
+   button {
+      border: 1px solid $question-border;
+      background-color: #FFF;
+      border-radius: 1.5rem;
+      color: $grey-1;
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-family: 'Volte-Rounded-300', sans-serif;
+      margin-top: 2rem;
+      order: 1;
+      padding: 1.6rem 2rem;
+
+      &.active {
+         color: #FFF;
+         font-family: 'Volte-Rounded-600', sans-serif;
+         font-size: 1.6rem;
+      }
+   }
+
+   button[data-color="Azul"].active {
+      background-color: #79DFF3;
+   }
+
+   button[data-color="Amarelo"].active {
+      background-color: #F9D968;
+   }
+
+   button[data-color="Verde"].active {
+      background-color: #47e69a;
+   }
+
+   button[disabled="true"] {
+      border-width: 2px;
+      color: rgba(0, 0, 0, 0.60);
+      cursor: auto;
+      filter: brightness(.9);
+      order: 2;
+   }
+
+   &:last-child {
+      margin-bottom: 1.6rem;
+   }
+}
+
+/*.answers {
+   align-items: center;
+   background-color: blanchedalmond;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   width: 30%;
+
+   h2 {
+      display: block;
+      margin-bottom: 5rem;
+   }
+}*/

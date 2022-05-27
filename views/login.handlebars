@@ -1,0 +1,46 @@
+<main class="main__login">
+   <div class="left__container">
+      <div class="images">
+         <img class="logo" src="/images/logo.svg" alt="Logo da Kion">
+         <img class="oval" src="/images/oval.svg" alt="">
+      </div>
+      <div class="content">
+         <h1 id="content__title">Selecionador de respostas</h1>
+         <p class="content__description">Está com dificuldade de resolver alguma situação?</p>
+         <p class="content__description">Por meio do Selecionador de Respostas, você encontra de forma automatizada e simplificada a solução que deseja.</p>
+         <p class="content__description">Basta selecionar o protocolo desejado e responder as perguntas em sequência até que sua resposta aparça.</p>
+      </div>
+   </div>
+	<div class="right__container">
+      <div class='login__area'>
+         <h2 id="login__title">Iniciar sessão</h1>
+         <form class="login__form" action='/login' method="POST">
+            <div class='login__form__cpf'>
+               <label class="login__form__Label" for='user'>CPF</label>
+               <input
+                  type='text'
+                  name='cpf'
+                  class='login_form__input'
+                  required
+               />
+            </div>
+            <div class='login_form__register'>
+               <label class="login__form__Label" for='user'>Matrícula</label>
+               <input
+                  type='text'
+                  name='register'
+                  class='login_form__input'
+                  required
+               />
+            </div>
+      
+            <div class="login__error">
+               <!--Mensagem de erro inserida pelo JS-->
+            </div>
+   
+            <button class="submit__btn" type="submit">Entrar</button>
+         </form>
+      </div>
+   </div>
+</main>
+<script type="module" src="/js/login.js"></script>

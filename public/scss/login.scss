@@ -1,0 +1,150 @@
+@use "style";
+
+@font-face {
+   font-family: Volte-Rounded-400;
+   src: url('../kion_fonts/VolteRounded-Regular.otf');
+}
+
+@font-face {
+   font-family: Volte-Rounded-500;
+   src: url('../kion_fonts/VolteRounded-Medium.otf');
+}
+
+@font-face {
+   font-family: Volte-Rounded-600;
+   src: url('../kion_fonts/VolteRounded-Semibold.otf');
+}
+
+.main__login {
+   align-items: center;
+   background-image: url('https://mykion.kiondental.tech/assets/login/new_bg.png');
+   background-position: top right;
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-size: 1440px;
+   color: style.$grey-1;
+   display: flex;
+   height: 100vh;
+   justify-content: center;
+   padding-left: 0;
+}
+
+.left__container {
+   background: linear-gradient(309.08deg, #0290bb -4.5%, #00b1d2 95.76%);
+   border-top-right-radius: 4.5%;
+   height: 100vh;
+   width: 45%;
+
+   .images {
+      display: flex;
+      justify-content: space-between;
+
+      .logo {
+         margin: 5rem 0 0 6rem;
+      }
+   }
+
+   .content {
+      color: #FFF;
+      height: auto;
+      padding: 6rem 6rem 0 6rem;
+      width: auto;
+
+      #content__title {
+         font-family: 'Volte-Rounded-500', sans-serif;
+         font-size: 3.8rem;
+      }
+
+      .content__description {
+         font-size: 2.4rem;
+         line-height: 4rem;
+         margin-top: 1.6rem;
+         text-align: start;
+      }
+   }
+}
+
+.right__container {
+   width: 55%;
+}
+
+.login__area {
+   align-items: center;
+   background-color: #FFF;
+   border-radius: 1rem;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   max-width: 60rem;
+   margin: 0 auto;
+   padding: 4rem;
+   width: 75%;
+
+   #login__title {
+      align-self: flex-end;
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      position: relative;
+   }
+
+   #login__title::after {
+      background: style.$yellow-2;
+      bottom: -1rem;
+      content: '';
+      display: block;
+      height: .3rem;
+      left: 0;
+      position: absolute;
+      width: 70%;
+   }
+}
+
+.login__form {
+   width: 100%;
+
+   .login__form__Label {
+      font-size: 1.5rem;
+      font-family: Arial, Helvetica, sans-serif;
+      margin-bottom: 1rem;
+   }
+
+   .login_form__input {
+      border-radius: .5rem;
+      border: 1px solid rgba(40, 40, 40, 0.45);
+      height: 5rem;
+      outline: none;
+      padding: 1rem;
+      width: 100%;
+   }
+
+   .login__form__cpf, .login_form__register {
+      display: flex;
+      flex-direction: column;
+   }
+
+   div + div {
+      margin-top: 1rem;
+   }
+
+   .login__error {
+      color: red;
+      font-size: 1.4rem;
+      font-family: 'Volte-Rounded-400', sans-serif;
+   }
+   
+   .submit__btn {
+      background-color: style.$blue-3;
+      border: none;
+      border-radius: 2.4rem;
+      color: #FFF;
+      cursor: pointer;
+      margin-top: 1rem;
+      padding: 1.6rem 3.2rem;
+      text-transform: uppercase;
+      transition: 300ms;
+
+      &:hover {
+         filter: brightness(.8);
+      }
+   }
+}

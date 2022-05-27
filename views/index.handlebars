@@ -1,0 +1,50 @@
+<header>
+	<div class='header__filter'>
+		<img
+			class='header__logo'
+			src='/images/logo_kion.svg'
+			alt='Logo da Kion'
+		/>
+		<h1 class='header__title'>Selecionador de Respostas</h1>
+		<label for='protocol' class='sr-only'>Escolher protocolo:</label>
+	</div>
+
+	<div class='header__user'>
+		<div class='user__details'>
+			<p id='user__name'>{{data.users.Nome}}</p>
+			<p id='user__departament'>{{data.users.Departamento}}</p>
+		</div>
+		<form action='/exit' method='GET'>
+			<button type='submit' class='exit__button'>
+				<i class='icon-log-out'></i>
+			</button>
+		</form>
+	</div>
+</header>
+<main>
+	<section class='content'>
+
+		<div class='question__area'>
+			<h2 class="question__title">Defina as perguntas KION</h1>
+			<div class='questions'>
+            <!--Questões que serão adicionadas pelo JS a partir do Sharepoint-->
+			</div>
+		</div>
+
+	</section>
+
+	<div class='modal-wrapper-answer'>
+		<div class='modal-answer'>
+
+			<div class='answer__content'>
+
+			</div>
+
+			<i class='icon-x'></i>
+
+		</div>
+	</div>
+</main>
+<script type='module' src='/js/main.js'></script>
+<script type='module' src='/js/modal.js'></script>
+<script type='module' src='/js/horizontalScroll.js'></script>
