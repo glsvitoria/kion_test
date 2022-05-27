@@ -28,8 +28,7 @@ var questionUsedApplication,
 	answerFilesUsedApplication,
    protocolIDUsedInApplication,
    collaboratorsUsedApplication
-
-      
+    
 // GETS das páginas utilizadas na aplicação
 app.get('/', async (req, res) => {
    // API SHAREPOINT
@@ -56,10 +55,6 @@ app.get('/', async (req, res) => {
 })
 
 // GETS para os dados trazidos do SHAREPOINT
-app.get('/collaborators', (req, res) => {
-   res.json(collaboratorsUsedApplication)
-})
-
 app.get('/selecionador/question', (req, res) => {
    res.json(questionUsedApplication)
 })
@@ -170,6 +165,10 @@ app.get('/selecionador/:cpf&:register', async (req, res) => {
          users: user
       }
    })
+})
+
+app.get('/collaborators', (req, res) => {
+   res.json(collaboratorsUsedApplication)
 })
 
 app.post('/login', (req, res) => {
