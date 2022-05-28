@@ -43,7 +43,6 @@ app.get('/', async (req, res) => {
                .items.getAll()
                .then(response => convertToStringAndJson(response))
                .then(data => alignCollaborators(data))
-            catchInfo()
          }
          await catchDataInSharepoint()
          
@@ -53,11 +52,28 @@ app.get('/', async (req, res) => {
    res.render('login')
 })
 
-function catchInfo() {
-   app.get('/collaborators', async (req, res) => {
-      res.json(collaboratorsUsedApplication)
+app.get('/collaborators', async (req, res) => {
+   await new PnpNode()
+   .init()
+   .then(async (settings) => {
+      const web = new Web(settings.siteUrl)
+      
+      async function catchDataInSharepoint() {
+         // BANCO DE COLABORADORES DA EMPRESA
+         collaboratorsUsedApplication = await sp.web.lists
+            .getByTitle('Colaboradores')
+            .items.getAll()
+            .then(response => convertToStringAndJson(response))
+            .then(data => alignCollaborators(data))
+      }
+      await catchDataInSharepoint()
+      
+      setInterval(catchDataInSharepoint, 5000);
    })
-}
+   .catch(console.log)
+   res.json(collaboratorsUsedApplication)
+})
+
 
 // GETS para os dados trazidos do SHAREPOINT
 app.get('/selecionador/question', (req, res) => {
