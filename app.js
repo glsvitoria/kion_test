@@ -26,67 +26,37 @@ var questionUsedApplication,
 	answerDetaUsedApplication,
 	wayToAnswerUsedApplication,
 	answerFilesUsedApplication,
-   protocolIDUsedInApplication,
-   collaboratorsUsedApplication
-    
+	protocolIDUsedInApplication,
+	collaboratorsUsedApplication
+
 // GETS das páginas utilizadas na aplicação
-app.get('/', async (req, res) => {
-   await new PnpNode()
-      .init()
-      .then(async (settings) => {
-         const web = new Web(settings.siteUrl)
-         
-         async function catchDataInSharepoint() {
-            // BANCO DE COLABORADORES DA EMPRESA
-            collaboratorsUsedApplication = await sp.web.lists
-               .getByTitle('Colaboradores')
-               .items.getAll()
-               .then(response => convertToStringAndJson(response))
-               .then(data => alignCollaborators(data))
+app.get('/login/:error?', async (req, res) => {
+	const { error } = req.params
+   console.log(error)
+   if(error != undefined){
+      res.render('login', {
+         type: 'sucess',
+         data: {
+            error: 'Dados incorretos'
          }
-         await catchDataInSharepoint()
-         
-         setInterval(catchDataInSharepoint, 5000);
       })
-      .catch(console.log)
-   res.render('login')
+   } else {
+      res.render('login')
+   }
 })
-
-app.get('/collaborators', async (req, res) => {
-   await new PnpNode()
-   .init()
-   .then(async (settings) => {
-      const web = new Web(settings.siteUrl)
-      
-      async function catchDataInSharepoint() {
-         // BANCO DE COLABORADORES DA EMPRESA
-         collaboratorsUsedApplication = await sp.web.lists
-            .getByTitle('Colaboradores')
-            .items.getAll()
-            .then(response => convertToStringAndJson(response))
-            .then(data => alignCollaborators(data))
-      }
-      await catchDataInSharepoint()
-      
-      setInterval(catchDataInSharepoint, 5000);
-   })
-   .catch(console.log)
-   res.json(collaboratorsUsedApplication)
-})
-
 
 // GETS para os dados trazidos do SHAREPOINT
 app.get('/selecionador/question', (req, res) => {
-   res.json(questionUsedApplication)
+	res.json(questionUsedApplication)
 })
 app.get('/selecionador/alternative', (req, res) => {
-   res.json(alternativeUsedApplication)
+	res.json(alternativeUsedApplication)
 })
 app.get('/selecionador/proto&departament', (req, res) => {
-   res.json(protoDepartUsedApplication)
+	res.json(protoDepartUsedApplication)
 })
 app.get('/selecionador/answerlist', (req, res) => {
-   res.json(answerDetaUsedApplication)
+	res.json(answerDetaUsedApplication)
 })
 app.get('/selecionador/waytoanswer', (req, res) => {
 	res.json(wayToAnswerUsedApplication)
@@ -95,110 +65,148 @@ app.get('/selecionador/answerfiles', (req, res) => {
 	res.json(answerFilesUsedApplication)
 })
 app.get('/selecionador/protocolid', (req, res) => {
-   res.json(protocolIDUsedInApplication)
+	res.json(protocolIDUsedInApplication)
 })
 
 app.get('/selecionador/:cpf&:register', async (req, res) => {
-   const {cpf, register} = req.params
+	const { cpf, register } = req.params
 
-   // API SHAREPOINT
-   await new PnpNode()
-   .init()
-   .then(async (settings) => {
-      const web = new Web(settings.siteUrl)
-      
-      async function catchDataInSharepoint() {           
-         // QUESTÕES
-         questionUsedApplication = await sp.web.lists
-         .getByTitle('Perguntas')
-         .items.getAll()
-         .then(response => convertToStringAndJson(response))
-         .then(data => alignQuestion(data))
-         
-         // ALTERNATIVAS
-         alternativeUsedApplication = await sp.web.lists
-         .getByTitle('Alternativas')
-         .items.getAll()
-         .then(response => convertToStringAndJson(response))
-         .then(data => alignAlternatives(data))
-         
-         // PROTOCOLOS E DEPARTAMENTOS
-         protoDepartUsedApplication = await sp.web.lists
-         .getByTitle('Protocolos e Departamentos')
-         .items.getAll()
-         .then(response => convertToStringAndJson(response))
-         .then(data => alignProtocolsAndDepartaments(data))
-         
-         // DETALHES DAS RESPOSTAS
-         answerDetaUsedApplication = await sp.web.lists
-         .getByTitle('Respostas-Detalhes')
-         .items.getAll()
-         .then(response => convertToStringAndJson(response))
-         .then(data => alignAnswerDetails(data))
-         
-         // CAMINHO PARA RESPOSTAS
-         wayToAnswerUsedApplication = await sp.web.lists
-         .getByTitle('Caminho para as Respostas')
-         .items.getAll()
-         .then(response => convertToStringAndJson(response))
-         .then(data => alignWayToAnswer(data))
-         
-         // ARQUIVOS DAS RESPOSTAS
-         const answerFilesListJson = await sp.web.lists
-         .getByTitle('Arquivos Resposta')
-         .items // Faltou anexos
-         .getAll()
-         .then(response => convertToStringAndJson(response))
-         
-         const answerFilesJson = await sp.web.lists
-            .getByTitle('Arquivos Resposta')
-            .items // Faltou anexos
-            .select("AttachmentFiles")
-            .expand("AttachmentFiles")
-            .getAll()
-            .then(response => convertToStringAndJson(response))
-            
-         answerFilesUsedApplication = alignAnswerFiles(answerFilesListJson, answerFilesJson)
-            
-         protocolIDUsedInApplication = await sp.web.lists
-            .getByTitle('Protocolos_ID')
-            .items.getAll()
-            .then(response => convertToStringAndJson(response))
-            .then(data => alignProtocolID(data))
-      }
-      await catchDataInSharepoint()
-      
-      setInterval(catchDataInSharepoint, 5000);
-   })
-   .catch(console.log)
+	// API SHAREPOINT
+	await new PnpNode()
+		.init()
+		.then(async (settings) => {
+			const web = new Web(settings.siteUrl)
 
-   let user
+			async function catchDataInSharepoint() {
+				// QUESTÕES
+				questionUsedApplication = await sp.web.lists
+					.getByTitle('Perguntas')
+					.items.getAll()
+					.then((response) => convertToStringAndJson(response))
+					.then((data) => alignQuestion(data))
 
-   collaboratorsUsedApplication.forEach((item) => {
-      if(cpf == item.CPF && register == item.Matricula) {
-         user = item
-      }
-   })
+				// ALTERNATIVAS
+				alternativeUsedApplication = await sp.web.lists
+					.getByTitle('Alternativas')
+					.items.getAll()
+					.then((response) => convertToStringAndJson(response))
+					.then((data) => alignAlternatives(data))
 
-   res.render('index', {
-      type: 'sucess',
-      data: {
-         users: user
-      }
-   })
+				// PROTOCOLOS E DEPARTAMENTOS
+				protoDepartUsedApplication = await sp.web.lists
+					.getByTitle('Protocolos e Departamentos')
+					.items.getAll()
+					.then((response) => convertToStringAndJson(response))
+					.then((data) => alignProtocolsAndDepartaments(data))
+
+				// DETALHES DAS RESPOSTAS
+				answerDetaUsedApplication = await sp.web.lists
+					.getByTitle('Respostas-Detalhes')
+					.items.getAll()
+					.then((response) => convertToStringAndJson(response))
+					.then((data) => alignAnswerDetails(data))
+
+				// CAMINHO PARA RESPOSTAS
+				wayToAnswerUsedApplication = await sp.web.lists
+					.getByTitle('Caminho para as Respostas')
+					.items.getAll()
+					.then((response) => convertToStringAndJson(response))
+					.then((data) => alignWayToAnswer(data))
+
+				// ARQUIVOS DAS RESPOSTAS
+				const answerFilesListJson = await sp.web.lists
+					.getByTitle('Arquivos Resposta')
+					.items // Faltou anexos
+					.getAll()
+					.then((response) => convertToStringAndJson(response))
+
+				const answerFilesJson = await sp.web.lists
+					.getByTitle('Arquivos Resposta')
+					.items // Faltou anexos
+					.select('AttachmentFiles')
+					.expand('AttachmentFiles')
+					.getAll()
+					.then((response) => convertToStringAndJson(response))
+
+				answerFilesUsedApplication = alignAnswerFiles(
+					answerFilesListJson,
+					answerFilesJson
+				)
+
+				protocolIDUsedInApplication = await sp.web.lists
+					.getByTitle('Protocolos_ID')
+					.items.getAll()
+					.then((response) => convertToStringAndJson(response))
+					.then((data) => alignProtocolID(data))
+			}
+			await catchDataInSharepoint()
+
+			setInterval(catchDataInSharepoint, 5000)
+		})
+		.catch(console.log)
+
+	let user
+
+	collaboratorsUsedApplication.forEach((item) => {
+		if (cpf == item.CPF && register == item.Matricula) {
+			user = item
+		}
+	})
+
+	res.render('index', {
+		type: 'sucess',
+		data: {
+			users: user,
+		},
+	})
 })
 
+app.post('/login', async (req, res) => {
+	const { cpf, register } = req.body
 
+	if (cpf.length > 11) {
+		cpf = cpf.replace('.', '')
+		cpf = cpf.replace('.', '')
+		cpf = cpf.replace('-', '')
+	}
 
-app.post('/login', (req, res) => {
-   const {cpf, register} = req.body
+	await new PnpNode()
+		.init()
+		.then(async (settings) => {
+			const web = new Web(settings.siteUrl)
 
-   res.redirect(`/selecionador/${cpf}&${register}`)
+			async function catchDataInSharepoint() {
+				// BANCO DE COLABORADORES DA EMPRESA
+				collaboratorsUsedApplication = await sp.web.lists
+					.getByTitle('Colaboradores')
+					.items.getAll()
+					.then((response) => convertToStringAndJson(response))
+					.then((data) => alignCollaborators(data))
+			}
+			await catchDataInSharepoint()
+
+			setInterval(catchDataInSharepoint, 5000)
+		})
+		.catch(console.log)
+
+   let cont = 0
+	collaboratorsUsedApplication.forEach((item) => {
+		if (cpf == item.CPF && register == item.Matricula) {
+         cont++
+			res.redirect(`/selecionador/${cpf}&${register}`)
+		} else if ((cpf != item.CPF || register != item.Matricula) && item.ID == collaboratorsUsedApplication.length - 1 && cont == 0) {
+			res.redirect('/login/error')
+		}
+	})
+})
+
+app.get('/collaborators', async (req, res) => {
+	res.json(collaboratorsUsedApplication)
 })
 
 // GET para deslogar do site
 app.get('/exit', (req, res) => {
-   res.redirect('/')
+	res.redirect('/')
 })
 
 // FUNÇÕES para tratar dados trazidos do SHAREPOINT
@@ -299,34 +307,34 @@ function alignWayToAnswer(data) {
 
 function alignAnswerFiles(data, files) {
 	let dataUsed = []
-   let i = 0
+	let i = 0
 	data.forEach((item) => {
-      if(files[i].AttachmentFiles.length == 1){
-         dataUsed.push({
-            TipoDeArquivo: item.TipodeArquivo,
-			   IDdaResposta: item.ID_x0020_da_x0020_Resposta,
-            Base64: item.base64,
-            Filename: files[i].AttachmentFiles[0].FileName
-         })
-      } else {
-         dataUsed.push({
-            TipoDeArquivo: item.TipodeArquivo,
-            IDdaResposta: item.ID_x0020_da_x0020_Resposta,
-            Base64: item.base64
-         })
-      }
-      i++
+		if (files[i].AttachmentFiles.length == 1) {
+			dataUsed.push({
+				TipoDeArquivo: item.TipodeArquivo,
+				IDdaResposta: item.ID_x0020_da_x0020_Resposta,
+				Base64: item.base64,
+				Filename: files[i].AttachmentFiles[0].FileName,
+			})
+		} else {
+			dataUsed.push({
+				TipoDeArquivo: item.TipodeArquivo,
+				IDdaResposta: item.ID_x0020_da_x0020_Resposta,
+				Base64: item.base64,
+			})
+		}
+		i++
 	})
-   
+
 	return dataUsed
 }
 
 function alignCollaborators(data) {
 	let dataUsed = []
-   let id = 0
+	let id = 0
 	data.forEach((item) => {
 		dataUsed.push({
-         ID: id,
+			ID: id,
 			Nome: item.Title,
 			Matricula: item.Matricula,
 			Nascimento: alignBirth(item.Nascimento),
@@ -337,7 +345,7 @@ function alignCollaborators(data) {
 			Departamento: item.Departamento,
 			Funcao: item.Fun_x00e7__x00e3_o,
 		})
-      id++
+		id++
 	})
 
 	return dataUsed
@@ -349,15 +357,15 @@ function alignBirth(data) {
 }
 
 function alignProtocolID(data) {
-   let dataUsed = []
-   data.forEach((item) => {
-      dataUsed.push({
-         Protocolo: item.Title,
-         ID: item.ID
-      })
-   })
+	let dataUsed = []
+	data.forEach((item) => {
+		dataUsed.push({
+			Protocolo: item.Title,
+			ID: item.ID,
+		})
+	})
 
-   return dataUsed
+	return dataUsed
 }
 
 // CONVERT TO STRING, BEFORE CONVERT TO JSON
