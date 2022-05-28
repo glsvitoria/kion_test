@@ -31,31 +31,33 @@ var questionUsedApplication,
     
 // GETS das páginas utilizadas na aplicação
 app.get('/', async (req, res) => {
-   // API SHAREPOINT
    await new PnpNode()
-   .init()
-   .then(async (settings) => {
-      const web = new Web(settings.siteUrl)
-      
-      async function catchDataInSharepoint() {
+      .init()
+      .then(async (settings) => {
+         const web = new Web(settings.siteUrl)
+         
+         async function catchDataInSharepoint() {
             // BANCO DE COLABORADORES DA EMPRESA
             collaboratorsUsedApplication = await sp.web.lists
                .getByTitle('Colaboradores')
                .items.getAll()
                .then(response => convertToStringAndJson(response))
                .then(data => alignCollaborators(data))
-            }
-      await catchDataInSharepoint()
-      
-      setInterval(catchDataInSharepoint, 5000);
-   })
-   .catch(console.log)
-
-   app.get('/collaborators', (req, res) => {
-      res.json(collaboratorsUsedApplication)
-   })
+         }
+         await catchDataInSharepoint()
+         
+         setInterval(catchDataInSharepoint, 5000);
+         catchInfo()
+      })
+      .catch(console.log)
    res.render('login')
 })
+
+function catchInfo() {
+   app.get('/collaborators', async (req, res) => {
+      res.json(collaboratorsUsedApplication)
+   })
+}
 
 // GETS para os dados trazidos do SHAREPOINT
 app.get('/selecionador/question', (req, res) => {
