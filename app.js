@@ -32,7 +32,6 @@ var questionUsedApplication,
 // GETS das páginas utilizadas na aplicação
 app.get('/login/:error?', async (req, res) => {
 	const { error } = req.params
-   console.log(error)
    if(error != undefined){
       res.render('login', {
          type: 'sucess',
