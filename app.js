@@ -43,11 +43,11 @@ app.get('/', async (req, res) => {
                .items.getAll()
                .then(response => convertToStringAndJson(response))
                .then(data => alignCollaborators(data))
+            catchInfo()
          }
          await catchDataInSharepoint()
          
          setInterval(catchDataInSharepoint, 5000);
-         catchInfo()
       })
       .catch(console.log)
    res.render('login')
