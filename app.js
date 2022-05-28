@@ -192,9 +192,9 @@ app.post('/login', async (req, res) => {
 	collaboratorsUsedApplication.forEach((item) => {
 		if (cpf == item.CPF && register == item.Matricula) {
          cont++
-			res.redirect(`/selecionador/${cpf}&${register}`)
+			res.redirect(302, `/selecionador/${cpf}&${register}`)
 		} else if ((cpf != item.CPF || register != item.Matricula) && item.ID == collaboratorsUsedApplication.length - 1 && cont == 0) {
-			res.redirect('/login/error')
+			res.redirect(302, '/login/error')
 		}
 	})
 })
