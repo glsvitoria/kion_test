@@ -30,19 +30,7 @@ var questionUsedApplication,
 	collaboratorsUsedApplication
 
 // GETS das páginas utilizadas na aplicação
-app.get('/login/:error?', async (req, res) => {
-	const { error } = req.params
-   if(error != undefined){
-      res.render('login', {
-         type: 'sucess',
-         data: {
-            error: 'Dados incorretos'
-         }
-      })
-   } else {
-      res.render('login')
-   }
-})
+
 
 // GETS para os dados trazidos do SHAREPOINT
 app.get('/selecionador/question', (req, res) => {
@@ -67,7 +55,7 @@ app.get('/selecionador/protocolid', (req, res) => {
 	res.json(protocolIDUsedInApplication)
 })
 
-app.get('/selecionador/:cpf&:register', async (req, res) => {
+app.get('/selecionador', async (req, res) => {
 	const { cpf, register } = req.params
 
 	// API SHAREPOINT
@@ -137,46 +125,8 @@ app.get('/selecionador/:cpf&:register', async (req, res) => {
 					.items.getAll()
 					.then((response) => convertToStringAndJson(response))
 					.then((data) => alignProtocolID(data))
-			}
-			await catchDataInSharepoint()
 
-			setInterval(catchDataInSharepoint, 5000)
-		})
-		.catch(console.log)
-
-	let user
-
-	collaboratorsUsedApplication.forEach((item) => {
-		if (cpf == item.CPF && register == item.Matricula) {
-			user = item
-		}
-	})
-
-	res.render('index', {
-		type: 'sucess',
-		data: {
-			users: user,
-		},
-	})
-})
-
-app.post('/login', async (req, res) => {
-	const { cpf, register } = req.body
-
-	if (cpf.length > 11) {
-		cpf = cpf.replace('.', '')
-		cpf = cpf.replace('.', '')
-		cpf = cpf.replace('-', '')
-	}
-
-	await new PnpNode()
-		.init()
-		.then(async (settings) => {
-			const web = new Web(settings.siteUrl)
-
-			async function catchDataInSharepoint() {
-				// BANCO DE COLABORADORES DA EMPRESA
-				collaboratorsUsedApplication = await sp.web.lists
+            collaboratorsUsedApplication = await sp.web.lists
 					.getByTitle('Colaboradores')
 					.items.getAll()
 					.then((response) => convertToStringAndJson(response))
@@ -188,15 +138,35 @@ app.post('/login', async (req, res) => {
 		})
 		.catch(console.log)
 
-   let cont = 0
-	collaboratorsUsedApplication.forEach((item) => {
-		if (cpf == item.CPF && register == item.Matricula) {
-         cont++
-			res.redirect(302, `/selecionador/${cpf}&${register}`)
-		} else if ((cpf != item.CPF || register != item.Matricula) && item.ID == collaboratorsUsedApplication.length - 1 && cont == 0) {
-			res.redirect(302, '/login/error')
-		}
+	const user = {
+      Nome: 'Adriana Romero Nestori',
+      Departamento: 'Produção'
+   }
+
+	res.render('index', {
+		type: 'sucess',
+		data: {
+			users: user,
+		},
 	})
+})
+
+app.get('/login/:error?', async (req, res) => {
+	const { error } = req.params
+   if(error != undefined){
+      res.render('login', {
+         type: 'sucess',
+         data: {
+            error: 'Dados incorretos'
+         }
+      })
+   } else {
+      res.render('login')
+   }
+})
+
+app.post('/login', async (req, res) => {
+   res.redirect(`/selecionador`)
 })
 
 app.get('/collaborators', async (req, res) => {
